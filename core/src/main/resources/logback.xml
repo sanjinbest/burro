@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>pekinghot-platform</contextName>
+    <property name="appName" value="burro_out" />
+    <property name="rootDir" value="/opt/log/" />
+    <property name="logPattern" value="%d [%t] %-5p %c{72} - %m%n" />
+    <!--sql的日志格式由于都是从一个类里面打印出来的，所以这里对格式做了调整,就不显示logger名了-->
+    <property name="sqlLogPattern" value="%d [%t] %-5p - %m%n" />
+    <property name="hdfsLogPattern" value="%m%n" />
+    <property name="maxHistory" value="20"/>
+    <property name="maxFileSize" value="200MB"/>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--所有日志都输出到all.log-->
+    <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${rootDir}${appName}/${appName}.all.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${rootDir}${appName}/history/${appName}.all-%d{yyyy-MM-dd}_%i.log
+            </FileNamePattern>
+            <MaxHistory>${maxHistory}</MaxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>${maxFileSize}</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logPattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <onMatch>DENY</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+    </appender>
+
+    <logger name="com.sanjinbest.burro.core" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ALL"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ALL" />
+    </root>
+
+</configuration>

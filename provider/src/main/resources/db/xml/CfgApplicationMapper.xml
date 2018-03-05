@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sanjinbest.burro.provider.db.interfaces.CfgApplicationMapper" >
+  <resultMap id="BaseResultMap" type="com.sanjinbest.burro.provider.db.model.CfgApplication" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="app_name" property="appName" jdbcType="VARCHAR" />
+    <result column="scheme" property="scheme" jdbcType="VARCHAR" />
+    <result column="auth" property="auth" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, app_name, scheme, auth
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cfg_application
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cfg_application
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sanjinbest.burro.provider.db.model.CfgApplication" >
+    insert into cfg_application (id, app_name, scheme, 
+      auth)
+    values (#{id,jdbcType=INTEGER}, #{appName,jdbcType=VARCHAR}, #{scheme,jdbcType=VARCHAR}, 
+      #{auth,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sanjinbest.burro.provider.db.model.CfgApplication" >
+    insert into cfg_application
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="appName != null" >
+        app_name,
+      </if>
+      <if test="scheme != null" >
+        scheme,
+      </if>
+      <if test="auth != null" >
+        auth,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appName != null" >
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="scheme != null" >
+        #{scheme,jdbcType=VARCHAR},
+      </if>
+      <if test="auth != null" >
+        #{auth,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sanjinbest.burro.provider.db.model.CfgApplication" >
+    update cfg_application
+    <set >
+      <if test="appName != null" >
+        app_name = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="scheme != null" >
+        scheme = #{scheme,jdbcType=VARCHAR},
+      </if>
+      <if test="auth != null" >
+        auth = #{auth,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sanjinbest.burro.provider.db.model.CfgApplication" >
+    update cfg_application
+    set app_name = #{appName,jdbcType=VARCHAR},
+      scheme = #{scheme,jdbcType=VARCHAR},
+      auth = #{auth,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
